@@ -18,12 +18,14 @@ resource "aws_autoscaling_group" "ftbAsg" {
   desired_capacity = 1
   min_size = 0
   max_size = 1
+  availability_zones = ["us-east-1a", "us-east-1b"]
 }
 
 # Launch Configuration
 resource "aws_launch_configuration" "ftbLc" {
   image_id = "${data.aws_ami.ftbAmi.id}"
   instance_type = "${var.instance_type}"
+  key_name = "ftbServer"
 }
 
 # AMI
