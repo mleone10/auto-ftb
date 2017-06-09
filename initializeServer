@@ -3,3 +3,7 @@
 sudo yum update -y
 sudo yum install java-1.8.0-openjdk -y
 
+wget -O minecraftServer.jar https://s3.amazonaws.com/Minecraft.Download/versions/1.7.10/minecraft_server.1.7.10.jar
+echo "eula=true" > eula.txt
+java -jar minecraftServer.jar
+
