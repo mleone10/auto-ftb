@@ -73,7 +73,7 @@ data "aws_ami" "ftbAmi" {
 # Route 53 A Record
 resource "aws_route53_record" "ftbR53" {
   zone_id = "${var.domain_zone_id}"
-  name    = "${var.domain_zone_id}"
+  name    = "${var.server_domain}"
   type    = "A"
 
   alias {
