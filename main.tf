@@ -1,8 +1,8 @@
 # Remote State Configuration
 terraform {
   backend "s3" {
-    bucket = "leone-ftb-server"
-    key    = "admin/stack.tfstate"
+    bucket = "${var.remote_state_bucket}"
+    key    = "${var.remote_state_key}"
     region = "us-east-1"
   }
 }
@@ -14,7 +14,7 @@ provider "aws" {
 
 # Auto-Scaling Group
 resource "aws_autoscaling_group" "ftbAsg" {
-  name = "ftbAsg"
+  name                 = "ftbAsg"
   launch_configuration = "${aws_launch_configuration.ftbLc.id}"
   load_balancers       = ["${aws_elb.ftbElb.id}"]
   desired_capacity     = 1
@@ -37,22 +37,22 @@ resource "aws_elb" "ftbElb" {
   }
 
   health_check {
-    healthy_threshold = 10
+    healthy_threshold   = 10
     unhealthy_threshold = 2
-    timeout = 5
-    interval = 30
-    target = "TCP:22"
+    timeout             = 5
+    interval            = 30
+    target              = "TCP:22"
   }
 }
 
 # Launch Configuration
 resource "aws_launch_configuration" "ftbLc" {
-  name_prefix = "ftbLc-"
+  name_prefix     = "ftbLc-"
   image_id        = "${data.aws_ami.ftbAmi.id}"
   instance_type   = "${var.instance_type}"
   key_name        = "ftbServer"
   security_groups = ["${aws_security_group.ftbSg.id}"]
-  user_data = "${file("initializeServer")}"
+  user_data       = "${file("initializeServer")}"
 }
 
 # AMI
@@ -67,6 +67,19 @@ data "aws_ami" "ftbAmi" {
   filter {
     name   = "name"
     values = ["amzn-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
+# Route 53 A Record
+resource "aws_route53_record" "ftbR53" {
+  zone_id = "${var.domain_zone_id}"
+  name    = "${var.domain_zone_id}"
+  type    = "A"
+
+  alias {
+    name                   = "${aws_elb.ftbElb.dns_name}"
+    zone_id                = "${aws_elb.ftbElb.zone_id}"
+    evaluate_target_health = true
   }
 }
 
@@ -115,4 +128,3 @@ resource "aws_security_group" "ftbSg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
