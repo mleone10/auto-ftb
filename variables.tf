@@ -1,11 +1,3 @@
-variable "remote_state_bucket" {
-  default = "leone-ftb-server"
-}
-
-variable "remote_state_key" {
-  default = "admin/stack.tfstate"
-}
-
 variable "instance_type" {
   default = "m4.large"
 }

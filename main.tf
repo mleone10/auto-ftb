@@ -1,8 +1,8 @@
 # Remote State Configuration
 terraform {
   backend "s3" {
-    bucket = "${var.remote_state_bucket}"
-    key    = "${var.remote_state_key}"
+    bucket = "leone-ftb-server"
+    key    = "admin/stack.tfstate"
     region = "us-east-1"
   }
 }
