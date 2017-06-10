@@ -9,6 +9,8 @@ unzip ftb.zip
 chmod 700 FTBInstall.sh
 chmod 700 ServerStart.sh
 echo "eula=true" > eula.txt
-aws s3 cp --recursive s3://leone-ftb-server/worldBackup/latest ./latest
-./ServerStart.sh
+
+aws s3 cp --recursive s3://leone-ftb-server/worlds .
+
+screen -S ftbScreen -dm ./ServerStart.sh
 

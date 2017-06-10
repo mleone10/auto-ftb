@@ -13,3 +13,7 @@ variable "server_domain" {
 variable "domain_zone_id" {
   default = "Z3GEDAV9VAYH8H"
 }
+
+variable "server_iam_instance_profile" {
+  default = "ftbServerRole"
+}

@@ -47,12 +47,13 @@ resource "aws_elb" "ftbElb" {
 
 # Launch Configuration
 resource "aws_launch_configuration" "ftbLc" {
-  name_prefix     = "ftbLc-"
-  image_id        = "${data.aws_ami.ftbAmi.id}"
-  instance_type   = "${var.instance_type}"
-  key_name        = "ftbServer"
-  security_groups = ["${aws_security_group.ftbSg.id}"]
-  user_data       = "${file("initializeServer")}"
+  name_prefix          = "ftbLc-"
+  image_id             = "${data.aws_ami.ftbAmi.id}"
+  instance_type        = "${var.instance_type}"
+  key_name             = "ftbServer"
+  security_groups      = ["${aws_security_group.ftbSg.id}"]
+  iam_instance_profile = "${var.server_iam_instance_profile}"
+  user_data            = "${file("initializeServer")}"
 }
 
 # AMI
