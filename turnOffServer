@@ -1,0 +1,5 @@
+#!/bin/bash
+
+aws autoscaling suspend-processes --auto-scaling-group-name ftbAsg --scaling-processes Launch
+aws ec2 stop-instances --instance-ids $(aws ec2 describe-instances | jq -r .Reservations[].Instances[].InstanceId)
+
